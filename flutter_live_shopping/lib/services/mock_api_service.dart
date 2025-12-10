@@ -103,12 +103,7 @@ class MockApiService {
         }
       }
 
-      final event = LiveEvent.fromJson(eventJson);
-
-      return event.copyWith(
-        products: products,
-        featuredProduct: featuredProduct,
-      );
+      return LiveEvent.fromJson(eventJson, products, featuredProduct);
     }).toList();
   }
 

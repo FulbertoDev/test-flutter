@@ -4,7 +4,6 @@ import '../screens/live/live_event_screen.dart';
 import '../screens/product/product_detail_screen.dart';
 import '../screens/checkout/checkout_screen.dart';
 import '../screens/profile/profile_screen.dart';
-import '../utils/app_enums.dart';
 
 class AppRouter {
   static final router = GoRouter(

@@ -38,8 +38,35 @@ class LiveEvent {
     required this.thumbnailUrl,
   });
 
+  factory LiveEvent.fromJson(
+    Map<String, dynamic> json,
+    List<Product> products,
+    Product? featured,
+  ) {
+    return LiveEvent(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      startTime: DateTime.parse(json['startTime'] as String),
+      endTime: json['endTime'] != null
+          ? DateTime.parse(json['endTime'] as String)
+          : null,
+      status: LiveEventStatus.values.firstWhere(
+        (e) => e.name == json['status'] as String,
+      ),
+      seller: Seller.fromJson(json['seller'] as Map<String, dynamic>),
+      products: products,
+      featuredProduct: featured,
+      viewerCount: json['viewerCount'] as int? ?? 0,
+      streamUrl: json['streamUrl'] as String?,
+      replayUrl: json['replayUrl'] as String?,
+      thumbnailUrl: json['thumbnailUrl'] as String,
+    );
+  }
+
+  /*
   factory LiveEvent.fromJson(Map<String, dynamic> json) =>
-      _$LiveEventFromJson(json);
+      _$LiveEventFromJson(json);*/
   Map<String, dynamic> toJson() => _$LiveEventToJson(this);
 
   LiveEvent copyWith({
