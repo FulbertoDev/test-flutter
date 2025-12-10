@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_live_shopping/utils/app_enums.dart';
 
 class HomeScreen extends StatefulWidget {
-  final LiveEventStatus? filterStatus;
-  const HomeScreen({super.key, this.filterStatus});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

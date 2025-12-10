@@ -30,7 +30,7 @@ class LiveEvent {
     this.endTime,
     required this.status,
     required this.seller,
-    required this.products,
+    this.products = const [],
     this.featuredProduct,
     this.viewerCount = 0,
     this.streamUrl,

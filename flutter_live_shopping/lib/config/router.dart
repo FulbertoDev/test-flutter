@@ -15,27 +15,7 @@ class AppRouter {
         pageBuilder: (context, state) =>
             NoTransitionPage(key: state.pageKey, child: const HomeScreen()),
       ),
-      GoRoute(
-        path: '/live-events',
-        pageBuilder: (context, state) => NoTransitionPage(
-          key: state.pageKey,
-          child: const HomeScreen(filterStatus: LiveEventStatus.live),
-        ),
-      ),
-      GoRoute(
-        path: '/upcoming',
-        pageBuilder: (context, state) => NoTransitionPage(
-          key: state.pageKey,
-          child: const HomeScreen(filterStatus: LiveEventStatus.scheduled),
-        ),
-      ),
-      GoRoute(
-        path: '/replays',
-        pageBuilder: (context, state) => NoTransitionPage(
-          key: state.pageKey,
-          child: const HomeScreen(filterStatus: LiveEventStatus.ended),
-        ),
-      ),
+
       GoRoute(
         path: '/live/:eventId',
         pageBuilder: (context, state) {
