@@ -18,6 +18,8 @@ class MockApiService {
   List<Order> _orders = [];
   List<Product> _products = [];
 
+  bool _simulateDelay = true;
+
   final String _currentUserId = 'user_001';
 
   Future<void> _loadMockData() async {
@@ -66,6 +68,7 @@ class MockApiService {
   }
 
   Future<void> _simulateNetworkDelay() async {
+    if (!_simulateDelay) return;
     await Future.delayed(
       Duration(milliseconds: 200 + (DateTime.now().millisecond % 300)),
     );
@@ -324,5 +327,59 @@ class MockApiService {
       if (a[key] != b[key]) return false;
     }
     return true;
+  }
+
+  void initMockData(Map<String, dynamic> data) {
+    reset();
+    _mockData = data;
+    _parseData();
+  }
+
+  void setSimulateDelay(bool value) {
+    _simulateDelay = value;
+  }
+
+  void reset() {
+    _mockData = null;
+    _cart = [];
+    _orders = [];
+    _products = [];
+  }
+
+  void _parseData() {
+    if (_mockData!['orders'] != null) {
+      _orders = (_mockData!['orders'] as List)
+          .map((json) => Order.fromJson(json))
+          .toList();
+    }
+
+    if (_mockData!['products'] != null) {
+      _products = (_mockData!['products'] as List)
+          .map((json) => Product.fromJson(json))
+          .toList();
+    }
+    if (_mockData!['cart'] != null) {
+      final cartData = _mockData!['cart'];
+      final items = cartData["items"] as List;
+
+      _cart = items.map((item) {
+        final productId = item['productId'] as String;
+        final product = _products.firstWhere((p) => p.id == productId);
+        final variations = (item["selectedVariations"] as Map<String, dynamic>);
+
+        final selectedVariations = <String, String>{};
+        for (final entry in variations.entries) {
+          selectedVariations[entry.key] = entry.value as String;
+        }
+
+        return CartItem(
+          id: item['id'],
+          productId: item['productId'],
+          quantity: item['quantity'],
+          product: product,
+          selectedVariations: selectedVariations,
+        );
+      }).toList();
+    }
   }
 }

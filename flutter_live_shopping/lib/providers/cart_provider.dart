@@ -5,7 +5,7 @@ import '../models/order.dart';
 import '../services/mock_api_service.dart';
 
 class CartProvider extends ChangeNotifier {
-  final MockApiService _apiService = MockApiService();
+  final MockApiService _apiService;
 
   List<CartItem> _items = [];
   bool _isLoading = false;
@@ -19,7 +19,8 @@ class CartProvider extends ChangeNotifier {
   double get shipping => _items.isEmpty ? 0 : 5.99;
   double get total => subtotal + shipping;
 
-  CartProvider() {
+  CartProvider({MockApiService? apiService})
+    : _apiService = apiService ?? MockApiService() {
     loadCart();
   }
 
@@ -39,8 +40,11 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> addItem(Product product, int quantity,
-      {Map<String, String>? variations}) async {
+  Future<void> addItem(
+    Product product,
+    int quantity, {
+    Map<String, String>? variations,
+  }) async {
     try {
       await _apiService.addToCart(product.id, quantity, variations: variations);
       await loadCart();
