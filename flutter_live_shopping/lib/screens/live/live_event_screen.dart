@@ -176,59 +176,46 @@ class _LiveEventScreenState extends State<LiveEventScreen> {
           Expanded(
             child: event.products.isEmpty
                 ? const Center(child: Text('Aucun produit'))
-                : horizontal
-                ? ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppTheme.paddingM,
-                    ),
-                    itemCount: event.products.length,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        width: 180,
-                        child: ProductCard(
-                          product: event.products[index],
-                          showFeaturedBadge: true,
-                          onAddToCart: () {
-                            context.read<CartProvider>().addItem(
-                              event.products[index],
-                              1,
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Produit ajouté au panier'),
-                                duration: Duration(seconds: 2),
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  )
-                : GridView.builder(
-                    padding: const EdgeInsets.all(AppTheme.paddingM),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.75,
+                : ResponsiveBuilder(
+                    builder: (context, sizingInformation) {
+                      int crossAxisCount;
+                      double childAspectRatio;
+
+                      if (sizingInformation.isDesktop) {
+                        crossAxisCount = 3;
+                        childAspectRatio = 0.68;
+                      } else if (sizingInformation.isTablet) {
+                        crossAxisCount = 2;
+                        childAspectRatio = 0.68;
+                      } else {
+                        crossAxisCount = 1;
+                        childAspectRatio = 0.68;
+                      }
+                      return GridView.builder(
+                        padding: const EdgeInsets.all(AppTheme.paddingM),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: crossAxisCount,
+                          childAspectRatio: childAspectRatio,
                           crossAxisSpacing: AppTheme.paddingM,
                           mainAxisSpacing: AppTheme.paddingM,
                         ),
-                    itemCount: event.products.length,
-                    itemBuilder: (context, index) {
-                      return ProductCard(
-                        product: event.products[index],
-                        showFeaturedBadge: true,
-                        onAddToCart: () {
-                          context.read<CartProvider>().addItem(
-                            event.products[index],
-                            1,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Produit ajouté au panier'),
-                              duration: Duration(seconds: 2),
-                            ),
+                        itemCount: event.products.length,
+                        itemBuilder: (context, index) {
+                          return ProductCard(
+                            product: event.products[index],
+                            showFeaturedBadge: true,
+                            onAddToCart: () {
+                              context.read<CartProvider>().addItem(
+                                event.products[index],
+                                1,
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Produit ajouté au panier'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            },
                           );
                         },
                       );

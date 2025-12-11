@@ -645,7 +645,7 @@ class Section extends StatelessWidget {
               case DeviceScreenType.mobile:
               default:
                 crossAxisCount = 1;
-                childAspectRatio = 1.1;
+                childAspectRatio = 1;
                 break;
             }
 
